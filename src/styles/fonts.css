@@ -1,0 +1,10 @@
+/* Font assets are hosted with the site; no runtime request to Google Fonts. */
+@import '@fontsource/manrope/latin-400.css';
+@import '@fontsource/manrope/latin-500.css';
+@import '@fontsource/manrope/latin-600.css';
+@import '@fontsource/italianno/latin-400.css';
+
+:root {
+  --font-body: 'Manrope', sans-serif;
+  --font-display: 'Italianno', cursive;
+}
