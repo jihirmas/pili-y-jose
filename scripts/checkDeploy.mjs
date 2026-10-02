@@ -8,9 +8,28 @@ const tokenNames = [
   'PARTY_COUPLE',
 ].map((type) => `VITE_TOKEN_${type}`)
 const values = tokenNames.map((name) => env[name])
-for (const name of tokenNames)
-  if (!/^[\w-]{40,}$/.test(env[name] || ''))
-    errors.push(`${name}: genera un token con npm run generate:tokens`)
+for (const name of tokenNames) {
+  const value = env[name] || ''
+  const problems = []
+  if (!value) {
+    problems.push('valor vacío o no disponible para este workflow')
+  } else {
+    if (value.length < 40)
+      problems.push(`demasiado corto: ${value.length} caracteres; mínimo 40`)
+    if (/\s/.test(value)) problems.push('contiene espacios o saltos de línea')
+    if (/[^\w-]/.test(value))
+      problems.push(
+        'contiene caracteres distintos de letras, números, guion o guion bajo',
+      )
+  }
+  if (problems.length) {
+    errors.push(
+      `${name}: ${problems.join('; ')}. Revisa el valor efectivo en Variables del repositorio y del environment production; copia el token existente de .env.local sin regenerarlo.`,
+    )
+  } else {
+    console.log(`${name}: formato válido (${value.length} caracteres).`)
+  }
+}
 if (new Set(values).size !== 4)
   errors.push('Los cuatro tokens deben ser diferentes.')
 if (
