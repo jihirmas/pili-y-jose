@@ -17,6 +17,7 @@ jobs:
       name: production
       url: ${{ steps.deployment.outputs.page_url }}
     env:
+      VITE_SITE_URL: https://jihirmas.github.io
       VITE_APPS_SCRIPT_URL: ${{ vars.VITE_APPS_SCRIPT_URL }}
       VITE_RECAPTCHA_SITE_KEY: ${{ vars.VITE_RECAPTCHA_SITE_KEY }}
       VITE_TOKEN_CEREMONY_SINGLE: ${{ vars.VITE_TOKEN_CEREMONY_SINGLE }}
@@ -37,11 +38,8 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run check:deploy
-        env:
-          VITE_SITE_URL: ${{ steps.pages.outputs.origin }}
       - run: npm run build
         env:
-          VITE_SITE_URL: ${{ steps.pages.outputs.origin }}
           VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
       - name: Upload site
         uses: actions/upload-pages-artifact@v3

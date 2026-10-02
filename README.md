@@ -51,7 +51,7 @@ Copia `.env.example` a `.env.local` y completa:
 - `VITE_APPS_SCRIPT_URL`: URL `/exec` del Web App.
 - `VITE_RECAPTCHA_SITE_KEY`: clave pública reCAPTCHA v2 Checkbox.
 - `VITE_TOKEN_CEREMONY_SINGLE`, `VITE_TOKEN_CEREMONY_COUPLE`, `VITE_TOKEN_PARTY_SINGLE`, `VITE_TOKEN_PARTY_COUPLE`: generados por `npm run generate:tokens`.
-- `VITE_SITE_URL`: origen final HTTPS, sin slash final; debe coincidir con `PARENT_ORIGIN`. En GitHub Actions se detecta desde Pages (para este repositorio: `https://jihirmas.github.io`).
+- `VITE_SITE_URL`: origen final HTTPS, sin slash final; debe coincidir con `PARENT_ORIGIN`. El workflow usa `https://jihirmas.github.io` para este repositorio.
 - `VITE_BASE_PATH`: `/` en desarrollo. El workflow detecta automáticamente `/pili-y-jose/` al publicar.
 - `VITE_OG_IMAGE`: opcional, URL HTTPS de la imagen final para compartir.
 

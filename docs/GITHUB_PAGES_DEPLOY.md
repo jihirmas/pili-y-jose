@@ -34,7 +34,7 @@ En **Environment variables → Add variable**, agrega:
 
 Se usan **Variables**, porque el workflow lee `vars.*`. Los valores `VITE_*` terminan en el frontend. `RECAPTCHA_SECRET` se guarda exclusivamente en Google Script Properties.
 
-No hace falta configurar `VITE_SITE_URL` ni `VITE_BASE_PATH` en GitHub: `configure-pages` entrega el origen y la ruta real del sitio. Para este repositorio son `https://jihirmas.github.io` y `/pili-y-jose/`. Las variables `AWS_*`, `S3_BUCKET` y `CLOUDFRONT_DISTRIBUTION_ID` ya no se usan.
+No hace falta configurar `VITE_SITE_URL` ni `VITE_BASE_PATH` en GitHub: el workflow fija el origen en `https://jihirmas.github.io` y `configure-pages` entrega la ruta `/pili-y-jose/`. Las variables `AWS_*`, `S3_BUCKET` y `CLOUDFRONT_DISTRIBUTION_ID` ya no se usan.
 
 ## 3. Cambiar Google de localhost a producción
 
