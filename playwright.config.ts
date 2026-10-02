@@ -19,7 +19,7 @@ export default defineConfig({
     },
     {
       command:
-        'VITE_BASE_PATH=/piliyjose/ VITE_TOKEN_CEREMONY_SINGLE=test-cs VITE_TOKEN_CEREMONY_COUPLE=test-cc VITE_TOKEN_PARTY_SINGLE=test-ps VITE_TOKEN_PARTY_COUPLE=test-pc npx vite build --outDir test-results/production && VITE_BASE_PATH=/piliyjose/ npx vite preview --outDir test-results/production --host 127.0.0.1 --port 4173',
+        'VITE_BASE_PATH=/piliyjose/ VITE_RECAPTCHA_SITE_KEY=test-key VITE_APPS_SCRIPT_URL=https://script.google.com/macros/s/test/exec VITE_TOKEN_CEREMONY_SINGLE=test-cs VITE_TOKEN_CEREMONY_COUPLE=test-cc VITE_TOKEN_PARTY_SINGLE=test-ps VITE_TOKEN_PARTY_COUPLE=test-pc npx vite build --outDir test-results/production && VITE_BASE_PATH=/piliyjose/ npx vite preview --outDir test-results/production --host 127.0.0.1 --port 4173',
       url: 'http://127.0.0.1:4173/piliyjose/',
       reuseExistingServer: false,
     },

@@ -636,8 +636,20 @@ nav a:hover {
   gap: 24px;
 }
 .captcha {
-  margin-top: 30px;
-  min-height: 160px;
+  margin-top: 36px;
+  padding-block: 12px;
+  text-align: center;
+}
+.captcha > .field-label {
+  display: block;
+  margin-bottom: 16px;
+  color: var(--color-muted);
+}
+.captcha-widget {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 78px;
 }
 .captcha > p:not(.field-label) {
   font-size: 0.75rem;
@@ -1773,6 +1785,9 @@ nav a:hover {
   }
   .rsvp-content {
     padding: 28px 22px;
+  }
+  .captcha {
+    margin-inline: -12px;
   }
   .ticket-stub {
     padding: 20px 22px;

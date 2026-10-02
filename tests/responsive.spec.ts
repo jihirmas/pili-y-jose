@@ -121,6 +121,51 @@ test('invalid invitation reveals no event details', async ({ page }) => {
   )
 })
 
+test('captcha uses a centered horizontal layout when it fits and adapts on resize', async ({
+  page,
+}) => {
+  // Stub Google's fixed-size widget; never send an RSVP or solve a real captcha.
+  await page.addInitScript(() => {
+    window.grecaptcha = {
+      render: (element, options) => {
+        element.dataset.size = options.size
+        const widget = document.createElement('div')
+        widget.style.width = options.size === 'normal' ? '304px' : '164px'
+        widget.style.height = options.size === 'normal' ? '78px' : '144px'
+        widget.style.flexShrink = '0'
+        widget.textContent = 'Verificación de prueba'
+        element.append(widget)
+        return 0
+      },
+      reset: () => {},
+    }
+  })
+  await page.goto('http://127.0.0.1:4173/piliyjose/?i=test-ps')
+  const container = page.locator('.captcha-widget')
+  for (const width of [1440, 390, 375, 320, 390]) {
+    await page.setViewportSize({ width, height: 900 })
+    await expect(container).toHaveAttribute(
+      'data-size',
+      width === 320 ? 'compact' : 'normal',
+    )
+    await container.scrollIntoViewIfNeeded()
+    const outer = await container.boundingBox()
+    const inner = await container.locator('div').boundingBox()
+    expect(outer).not.toBeNull()
+    expect(inner).not.toBeNull()
+    expect(inner!.x).toBeGreaterThanOrEqual(outer!.x)
+    expect(inner!.x + inner!.width).toBeLessThanOrEqual(outer!.x + outer!.width)
+    expect(
+      Math.abs(inner!.x + inner!.width / 2 - outer!.x - outer!.width / 2),
+    ).toBeLessThan(1)
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true)
+  }
+})
+
 test('motion reveals content on scroll and respects reduced motion', async ({
   page,
 }) => {

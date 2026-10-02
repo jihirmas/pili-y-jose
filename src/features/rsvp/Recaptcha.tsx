@@ -6,7 +6,7 @@ type RecaptchaApi = {
     element: HTMLElement,
     options: {
       sitekey: string
-      size: 'compact'
+      size: 'normal' | 'compact'
       callback: (token: string) => void
       'expired-callback': () => void
       'error-callback': () => void
@@ -61,17 +61,29 @@ export function Recaptcha({
   const callback = useRef(onToken)
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading')
   const [retry, setRetry] = useState(0)
+  const [size, setSize] = useState<'normal' | 'compact' | null>(null)
+  useEffect(() => {
+    const container = ref.current
+    if (!container) return
+    const measure = () =>
+      setSize(container.clientWidth >= 304 ? 'normal' : 'compact')
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
   useEffect(() => {
     callback.current = onToken
   }, [onToken])
   useEffect(() => {
+    if (!size) return
     let active = true
     loadRecaptcha()
       .then((api) => {
         if (!active || !ref.current) return
         widget.current = api.render(ref.current, {
           sitekey: siteKey,
-          size: 'compact',
+          size,
           callback: (token) => callback.current(token),
           'expired-callback': () => callback.current(''),
           'error-callback': () => {
@@ -89,16 +101,17 @@ export function Recaptcha({
       active = false
       if (widget.current !== undefined) window.grecaptcha?.reset(widget.current)
       widget.current = undefined
+      callback.current('')
       container?.replaceChildren()
     }
-  }, [siteKey, retry])
+  }, [siteKey, retry, size])
   useEffect(() => {
     if (widget.current !== undefined) window.grecaptcha?.reset(widget.current)
   }, [resetCount])
   return (
     <div className="captcha">
       <p className="field-label">{copy.rsvp.captchaLabel} *</p>
-      <div ref={ref} />
+      <div ref={ref} className="captcha-widget" />
       {state === 'loading' && <p role="status">{copy.rsvp.captchaLoading}</p>}
       {state === 'error' && (
         <div role="alert">
