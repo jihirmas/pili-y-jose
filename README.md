@@ -14,6 +14,8 @@ npm run dev
 
 Abre `http://127.0.0.1:5173/?preview=ceremony_couple`. Las otras vistas son `ceremony_single`, `party_single` y `party_couple`. El inicio sin token muestra la pantalla de enlace inválido, también en desarrollo. `preview` solo funciona con el servidor de desarrollo; nunca en el build de producción.
 
+Para revisar la tarjeta confirmada sin completar ni enviar el formulario, abre `http://127.0.0.1:5173/?preview=party_single&rsvp=success&name=Camila%20P%C3%A9rez&email=camila%40ejemplo.cl#confirmar`. Esta simulación solo existe en desarrollo.
+
 Los previews permiten revisar los campos sin Google configurado; no simulan guardados ni muestran éxito ficticio. Para enviar realmente, configura Google y entra con `?i=<TOKEN>`.
 
 ```bash
@@ -72,3 +74,5 @@ El envío usa un formulario HTML POST a un iframe oculto. Solo un ACK con origen
 HtmlService crea un iframe anidado: el servidor usa `window.top.postMessage` con el origen exacto configurado y el receptor comprueba la pertenencia del emisor al iframe esperado, incluido su sandbox. Es la adaptación necesaria al [sandbox documentado de Google](https://developers.google.com/apps-script/guides/html/restrictions). No se acepta cualquier mensaje de Google ni se usa `no-cors`.
 
 Los tests con mocks verifican la lógica; no sustituyen la prueba contra tu despliegue real. La web se publica en GitHub Pages; Apps Script y la hoja se configuran por separado en Google. La imagen Open Graph se inserta en HTML durante el build cuando existe `VITE_OG_IMAGE`, para que WhatsApp no dependa de ejecutar JavaScript.
+
+Cada build genera `meta.json` con una versión única. La aplicación lo consulta sin caché al abrirse, al volver a la pestaña y cada minuto. Cuando detecta una publicación nueva, limpia Cache Storage, anula service workers anteriores y recarga la misma invitación con una marca de versión; los assets de Vite también llevan hash.

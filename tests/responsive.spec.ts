@@ -121,7 +121,7 @@ test('invalid invitation reveals no event details', async ({ page }) => {
   )
 })
 
-test('captcha uses a centered horizontal layout when it fits and adapts on resize', async ({
+test('captcha stays left aligned and adapts its official size to the available width', async ({
   page,
 }) => {
   // Stub Google's fixed-size widget; never send an RSVP or solve a real captcha.
@@ -146,7 +146,7 @@ test('captcha uses a centered horizontal layout when it fits and adapts on resiz
     await page.setViewportSize({ width, height: 900 })
     await expect(container).toHaveAttribute(
       'data-size',
-      width === 320 ? 'compact' : 'normal',
+      width >= 390 ? 'normal' : 'compact',
     )
     await container.scrollIntoViewIfNeeded()
     const outer = await container.boundingBox()
@@ -155,15 +155,44 @@ test('captcha uses a centered horizontal layout when it fits and adapts on resiz
     expect(inner).not.toBeNull()
     expect(inner!.x).toBeGreaterThanOrEqual(outer!.x)
     expect(inner!.x + inner!.width).toBeLessThanOrEqual(outer!.x + outer!.width)
-    expect(
-      Math.abs(inner!.x + inner!.width / 2 - outer!.x - outer!.width / 2),
-    ).toBeLessThan(1)
+    expect(Math.abs(inner!.x - outer!.x)).toBeLessThan(1)
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true)
   }
+})
+
+test('development URL previews the confirmed boarding pass without submitting', async ({
+  page,
+}) => {
+  await page.goto(
+    '/?preview=party_single&rsvp=success&name=Camila%20P%C3%A9rez&email=camila%40ejemplo.cl#confirmar',
+  )
+  await expect(page.getByText('¡Confirmación recibida!')).toBeVisible()
+  await expect(page.getByText('Camila Pérez')).toBeVisible()
+  await expect(page.getByText('camila@ejemplo.cl')).toBeVisible()
+  await expect(page.locator('.rsvp-ticket form')).toHaveCount(0)
+  await expect(page.locator('.ticket-header')).toBeVisible()
+  await expect(page.locator('.ticket-metadata')).toBeVisible()
+  await expect(page.locator('.ticket-stub')).toBeVisible()
+})
+
+test('production metadata forces one cache-busting reload while preserving the invite', async ({
+  page,
+}) => {
+  await page.route('**/meta.json?*', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ version: 'new-deployment-for-test' }),
+    })
+  })
+  await page.goto('http://127.0.0.1:4173/piliyjose/?i=test-ps')
+  await expect(page).toHaveURL(
+    /\/piliyjose\/\?i=test-ps&_version=new-deployment-for-test$/,
+  )
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Pili')
 })
 
 test('motion reveals content on scroll and respects reduced motion', async ({

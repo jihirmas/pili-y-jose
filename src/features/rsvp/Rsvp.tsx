@@ -27,7 +27,18 @@ export function Rsvp({
   inviteToken: string
 }) {
   const { ceremony, couple } = invitationFlags(type)
-  const [state, setState] = useState<SubmissionState>('idle')
+  const previewParams = new URLSearchParams(window.location.search)
+  const previewSuccess =
+    import.meta.env.DEV && previewParams.get('rsvp') === 'success'
+  const [state, setState] = useState<SubmissionState>(
+    previewSuccess ? 'success' : 'idle',
+  )
+  const [confirmedGuest, setConfirmedGuest] = useState({
+    name: previewSuccess ? previewParams.get('name') || 'Nombre Invitado' : '',
+    email: previewSuccess
+      ? previewParams.get('email') || 'invitado@ejemplo.cl'
+      : '',
+  })
   const [message, setMessage] = useState('')
   const [captcha, setCaptcha] = useState('')
   const [captchaReset, setCaptchaReset] = useState(0)
@@ -180,6 +191,7 @@ export function Rsvp({
         { ...cleaned, inviteToken, recaptchaToken: captcha },
         controller.current.signal,
       )
+      setConfirmedGuest({ name: cleaned.guestName, email: cleaned.email })
       setState('success')
     } catch (error) {
       if (controller.current.signal.aborted) return
@@ -207,27 +219,23 @@ export function Rsvp({
         <p className="rsvp-deadline">{copy.rsvp.deadline}</p>
       </div>
       <Reveal className="rsvp-ticket">
-        {state !== 'success' && (
-          <>
-            <div className="ticket-header">
-              <div>
-                <p className="eyebrow">{copy.rsvp.ticketLabel}</p>
-                <span className="signature">{event.couple.displayName}</span>
-              </div>
-              <Plane />
-            </div>
-            <div className="ticket-metadata">
-              <div>
-                <span>{copy.rsvp.ticketDestination}</span>
-                <strong>{event.destinationLabel}</strong>
-              </div>
-              <div>
-                <span>{copy.rsvp.ticketDate}</span>
-                <strong>{event.dateShort}</strong>
-              </div>
-            </div>
-          </>
-        )}
+        <div className="ticket-header">
+          <div>
+            <p className="eyebrow">{copy.rsvp.ticketLabel}</p>
+            <span className="signature">{event.couple.displayName}</span>
+          </div>
+          <Plane />
+        </div>
+        <div className="ticket-metadata">
+          <div>
+            <span>{copy.rsvp.ticketDestination}</span>
+            <strong>{event.destinationLabel}</strong>
+          </div>
+          <div>
+            <span>{copy.rsvp.ticketDate}</span>
+            <strong>{event.dateShort}</strong>
+          </div>
+        </div>
         <div className="rsvp-content">
           {state === 'success' ? (
             <div className="boarding-pass" role="status">
@@ -238,6 +246,16 @@ export function Rsvp({
                 {copy.rsvp.success.title}
               </h3>
               <p>{copy.rsvp.success.body}</p>
+              <dl className="confirmation-details">
+                <div>
+                  <dt>{copy.rsvp.success.name}</dt>
+                  <dd>{confirmedGuest.name}</dd>
+                </div>
+                <div>
+                  <dt>{copy.rsvp.success.email}</dt>
+                  <dd>{confirmedGuest.email}</dd>
+                </div>
+              </dl>
             </div>
           ) : closed ? (
             <div className="rsvp-notice" role="status">
@@ -367,13 +385,11 @@ export function Rsvp({
             </form>
           )}
         </div>
-        {state !== 'success' && (
-          <div className="ticket-stub" aria-hidden="true">
-            <span>{event.couple.displayName}</span>
-            <span>{event.dateShort}</span>
-            <span>↓</span>
-          </div>
-        )}
+        <div className="ticket-stub" aria-hidden="true">
+          <span>{event.couple.displayName}</span>
+          <span>{event.dateShort}</span>
+          <span>↓</span>
+        </div>
       </Reveal>
     </section>
   )

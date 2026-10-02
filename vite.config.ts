@@ -12,8 +12,14 @@ const escapeHtml = (s: string) =>
 
 export default defineConfig(({ mode }) => {
   const env = { ...loadEnv(mode, process.cwd(), ''), ...process.env }
+  const buildVersion =
+    env.GITHUB_SHA ||
+    `${new Date().toISOString()}-${Math.random().toString(36).slice(2)}`
   return {
     base: env.VITE_BASE_PATH || '/',
+    define: {
+      __BUILD_VERSION__: JSON.stringify(buildVersion),
+    },
     plugins: [
       react(),
       {
@@ -25,6 +31,16 @@ export default defineConfig(({ mode }) => {
               ? `<meta property="og:image" content="${escapeHtml(url)}">`
               : ''
           return html.replace('<!-- OG_IMAGE -->', image)
+        },
+      },
+      {
+        name: 'build-metadata',
+        generateBundle() {
+          this.emitFile({
+            type: 'asset',
+            fileName: 'meta.json',
+            source: JSON.stringify({ version: buildVersion }),
+          })
         },
       },
     ],

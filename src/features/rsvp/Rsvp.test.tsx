@@ -21,6 +21,7 @@ vi.mock('./submit', async (importOriginal) => ({
   submitRsvp: vi.fn(),
 }))
 beforeEach(() => {
+  window.history.replaceState({}, '', '/')
   vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-10-01T00:00:00-03:00'))
   vi.mocked(submitRsvp).mockReset()
 })
@@ -85,11 +86,25 @@ describe('submission UI', () => {
     expect(
       screen.getByText('Gracias por confirmar. ¡Te esperamos!'),
     ).toBeInTheDocument()
-    expect(screen.queryByText('Pili & Jose')).not.toBeInTheDocument()
+    expect(screen.getAllByText('Pili & Jose')).toHaveLength(2)
     expect(screen.queryByText('Nos acompañan')).not.toBeInTheDocument()
-    expect(screen.queryByText('Juan Pérez')).not.toBeInTheDocument()
+    expect(screen.getByText('Juan Pérez')).toBeInTheDocument()
+    expect(screen.getByText('juan@example.com')).toBeInTheDocument()
     expect(screen.queryByText('María González')).not.toBeInTheDocument()
     expect(container.querySelector('form')).toBeNull()
+  })
+  it('shows a development-only success preview without submitting', () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/?preview=party_single&rsvp=success&name=Camila%20P%C3%A9rez&email=camila%40ejemplo.cl',
+    )
+    const { container } = render(<Rsvp type="party_single" inviteToken="" />)
+    expect(screen.getByText('¡Confirmación recibida!')).toBeInTheDocument()
+    expect(screen.getByText('Camila Pérez')).toBeInTheDocument()
+    expect(screen.getByText('camila@ejemplo.cl')).toBeInTheDocument()
+    expect(container.querySelector('form')).toBeNull()
+    expect(submitRsvp).not.toHaveBeenCalled()
   })
   it.each([
     'TIMEOUT',

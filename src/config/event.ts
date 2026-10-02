@@ -240,6 +240,8 @@ export const copy = {
       eyebrow: 'Check-in completado',
       title: '¡Confirmación recibida!',
       body: 'Gracias por confirmar. ¡Te esperamos!',
+      name: 'Nombre',
+      email: 'Correo',
     },
     errors: {
       INVALID_INVITE:
