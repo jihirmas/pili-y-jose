@@ -530,8 +530,23 @@ nav a:hover {
 }
 .rsvp-intro .rsvp-deadline {
   color: var(--color-navy);
-  font-size: 0.8rem;
-  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 18px;
+  text-align: center;
+}
+.rsvp-deadline span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.rsvp-deadline strong {
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-weight: 600;
 }
 .required-note {
   font-size: 0.67rem;

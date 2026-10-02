@@ -37,7 +37,9 @@ describe('rendering all invitation variants', () => {
         screen.getByRole('heading', { name: 'Lista de novios' }),
       ).toBeInTheDocument()
       expect(
-        screen.getByRole('heading', { name: 'Nuestras fotos' }),
+        screen.getByRole('heading', {
+          name: 'Algunos recuerdos de nosotros',
+        }),
       ).toBeInTheDocument()
       expect(
         screen.getByRole('heading', { name: 'Contacto' }),

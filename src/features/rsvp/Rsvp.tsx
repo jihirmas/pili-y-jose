@@ -216,7 +216,10 @@ export function Rsvp({
         <p className="eyebrow">{copy.rsvp.eyebrow}</p>
         <h2 id="rsvp-title">{copy.rsvp.title}</h2>
         <p>{copy.rsvp.intro}</p>
-        <p className="rsvp-deadline">{copy.rsvp.deadline}</p>
+        <p className="rsvp-deadline">
+          <span>{copy.rsvp.deadlineLabel}</span>
+          <strong>{copy.rsvp.deadlineDate}</strong>
+        </p>
       </div>
       <Reveal className="rsvp-ticket">
         <div className="ticket-header">

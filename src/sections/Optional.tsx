@@ -30,7 +30,9 @@ export function Gallery() {
         >
           <Reveal className="gallery-heading">
             <div>
-              <p className="eyebrow">{copy.optional.galleryLabel}</p>
+              {copy.optional.galleryLabel && (
+                <p className="eyebrow">{copy.optional.galleryLabel}</p>
+              )}
               <h2 id="gallery-title">{copy.optional.gallery}</h2>
             </div>
             {gallery.images.length === 0 && (
