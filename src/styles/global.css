@@ -142,6 +142,7 @@ nav a {
   gap: 12px;
   font-size: 0.73rem;
   min-height: 44px;
+  white-space: nowrap;
 }
 nav a:hover {
   color: #b6d8eb;
@@ -894,10 +895,13 @@ nav a:hover {
   nav {
     width: 100%;
     justify-content: center;
-    gap: 26px;
+    gap: clamp(12px, 4vw, 26px);
   }
   nav a {
     font-size: 0.68rem;
+  }
+  .nav-confirm {
+    gap: 6px;
   }
   .hero {
     min-height: max(580px, calc(90svh - 64px));

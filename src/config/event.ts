@@ -122,7 +122,8 @@ export const event = {
 
 export const copy = {
   nav: {
-    itinerary: 'El gran día',
+    itinerary: 'Horarios',
+    gifts: 'Regalos',
     locations: 'Cómo llegar',
     rsvp: 'Confirmar',
     skip: 'Ir al contenido',

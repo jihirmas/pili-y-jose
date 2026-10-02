@@ -27,6 +27,7 @@ export default function App() {
       <header className="site-header">
         <nav aria-label="Principal">
           <a href="#nuestro-dia">{copy.nav.itinerary}</a>
+          <a href="#regalos">{copy.nav.gifts}</a>
           <a href="#ubicaciones">{copy.nav.locations}</a>
           <a href="#confirmar" className="nav-confirm">
             {copy.nav.rsvp}
