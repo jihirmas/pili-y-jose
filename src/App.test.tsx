@@ -54,6 +54,21 @@ describe('rendering all invitation variants', () => {
     )
     expect(container.textContent).not.toMatch(/2027|Alto|Iglesia|Confirmar/)
   })
+  it('scrolls to an initial section hash after React renders it', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/?preview=party_single#ubicaciones',
+    )
+    const scrollIntoView = vi.fn()
+    const originalScrollIntoView = Element.prototype.scrollIntoView
+    Element.prototype.scrollIntoView = scrollIntoView
+
+    render(<App />)
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalled())
+
+    Element.prototype.scrollIntoView = originalScrollIntoView
+  })
   it('clears companion inputs when changed to no', async () => {
     render(<Rsvp type="ceremony_couple" inviteToken="" />)
     fireEvent.click(screen.getByLabelText('Sí'))

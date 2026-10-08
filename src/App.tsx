@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { MotionConfig } from 'motion/react'
 import { copy, event } from './config/event'
 import { resolveInvitation } from './config/invitations'
@@ -8,7 +9,49 @@ import { Contact, DressCode, Gallery, Gifts } from './sections/Optional'
 import { Rsvp } from './features/rsvp/Rsvp'
 import { Plane } from './components/TravelRoute'
 
+function useHashScroll() {
+  useEffect(() => {
+    let frame = 0
+    let retry = 0
+
+    const scrollToHash = () => {
+      const hash = window.location.hash.slice(1)
+      if (!hash) return
+
+      let id = hash
+      try {
+        id = decodeURIComponent(hash)
+      } catch {
+        // Use the literal hash if it contains an invalid escape sequence.
+      }
+
+      document.getElementById(id)?.scrollIntoView({ block: 'start' })
+    }
+
+    const scheduleScroll = () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(retry)
+      frame = window.requestAnimationFrame(() => {
+        scrollToHash()
+        retry = window.setTimeout(scrollToHash, 350)
+      })
+    }
+
+    scheduleScroll()
+    window.addEventListener('hashchange', scheduleScroll)
+    window.addEventListener('pageshow', scheduleScroll)
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(retry)
+      window.removeEventListener('hashchange', scheduleScroll)
+      window.removeEventListener('pageshow', scheduleScroll)
+    }
+  }, [])
+}
+
 export default function App() {
+  useHashScroll()
   const type = resolveInvitation(window.location.search)
   if (!type)
     return (
