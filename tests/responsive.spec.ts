@@ -117,7 +117,7 @@ test('invalid invitation reveals no event details', async ({ page }) => {
     'Esta invitación necesita un enlace válido.',
   )
   await expect(page.locator('body')).not.toContainText(
-    /2027|Alto San Francisco|Iglesia|22:00/,
+    /2027|Alto San Francisco|Iglesia|22:30/,
   )
 })
 

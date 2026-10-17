@@ -28,7 +28,7 @@ describe('rendering all invitation variants', () => {
           screen.getByLabelText(/Restricción alimentaria/),
         ).toBeInTheDocument()
       }
-      expect(text).toContain('22:00')
+      expect(text).toContain('22:30')
       expect(text.includes('¿Vendrás acompañado/a?')).toBe(
         type.endsWith('couple'),
       )

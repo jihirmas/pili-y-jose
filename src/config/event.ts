@@ -43,7 +43,7 @@ export const event = {
     ...venueNavigation,
   },
   cocktailTime: '19:00',
-  partyTime: '22:00',
+  partyTime: '22:30',
   eventEntranceDescription: null as string | null, // TODO: agregar descripción exacta de la entrada a Alto San Francisco.
   mapImage: {
     src: `${imageBase}mapa-san-francisco.png`,
@@ -146,7 +146,7 @@ export const copy = {
     cocktail: 'Cóctel',
     party: 'Fiesta',
     partyTitle: 'La fiesta',
-    partyBody: 'Te esperamos a partir de las 22:00.',
+    partyBody: 'Te esperamos a partir de las 22:30.',
     timePrefix: 'Desde las',
   },
   locations: {
