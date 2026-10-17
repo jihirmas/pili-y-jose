@@ -2,6 +2,7 @@ import { useRef, useState, type CSSProperties } from 'react'
 import { copy, event } from '../config/event'
 import { invitationFlags, type InvitationType } from '../config/invitations'
 import { Reveal } from '../components/Reveal'
+import { GoogleMapsIcon, WazeIcon } from '../components/BrandIcons'
 
 function NavigationLinks({
   maps,
@@ -21,7 +22,7 @@ function NavigationLinks({
         aria-label={`${copy.locations.maps}: ${name}`}
       >
         {copy.locations.maps}
-        <span aria-hidden="true">↓</span>
+        <GoogleMapsIcon />
       </a>
       {waze && (
         <a
@@ -31,7 +32,7 @@ function NavigationLinks({
           aria-label={`${copy.locations.waze}: ${name}`}
         >
           {copy.locations.waze}
-          <span aria-hidden="true">↓</span>
+          <WazeIcon />
         </a>
       )}
     </div>

@@ -1,6 +1,8 @@
 import { copy, event } from '../config/event'
 import { Reveal } from '../components/Reveal'
 import { GiftOutline, PhotoOutline } from '../components/TravelArtwork'
+import { ExternalLinkIcon } from '../components/ExternalLinkIcon'
+import { WhatsAppIcon } from '../components/BrandIcons'
 
 export function DressCode() {
   const { dressCode } = event
@@ -101,7 +103,7 @@ export function Gifts() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {copy.optional.giftsLink} <span aria-hidden="true">↓</span>
+              {copy.optional.giftsLink} <ExternalLinkIcon />
             </a>
           ) : (
             <p className="pending-note">{copy.optional.giftsPending}</p>
@@ -149,11 +151,12 @@ export function Contact() {
                 <>
                   <a href={`tel:${person.phone}`}>{person.phone}</a>
                   <a
+                    className="external-text-link"
                     href={`https://wa.me/${person.phone.replace(/\D/g, '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {copy.optional.whatsapp} ↓
+                    {copy.optional.whatsapp} <WhatsAppIcon />
                   </a>
                 </>
               ) : (
