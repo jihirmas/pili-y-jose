@@ -73,6 +73,7 @@ describe('submission UI', () => {
     expect(
       screen.getByRole('button', { name: /Guardando tu confirmación/ }),
     ).toBeDisabled()
+    expect(container.querySelector('.submit-spinner')).toBeInTheDocument()
     resolve({
       source: 'pili-jose-rsvp',
       nonce: 'test',
@@ -108,7 +109,6 @@ describe('submission UI', () => {
   })
   it.each([
     'TIMEOUT',
-    'DUPLICATE_RSVP',
     'CAPTCHA_FAILED',
     'SERVER_ERROR',
   ] as const)('preserves data after %s without false success', async (code) => {

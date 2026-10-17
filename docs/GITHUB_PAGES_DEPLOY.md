@@ -54,7 +54,7 @@ El proyecto actual acepta un único `PARENT_ORIGIN`. Al cambiarlo de localhost a
 2. El workflow instala dependencias, ejecuta lint y tests, valida configuración, compila con la ruta de Pages y publica `dist/` usando las acciones oficiales. La ejecución muestra la URL publicada en el environment `production`.
 3. Abre `https://jihirmas.github.io/pili-y-jose/?i=TU_TOKEN`. Sin token verás la pantalla de enlace inválido: es el comportamiento previsto.
 4. Comprueba fotos, ambos mapas, estilos y navegación. Prueba los cuatro enlaces de [INVITATION_LINKS.md](INVITATION_LINKS.md).
-5. Envía una confirmación con captcha desde Pages y verifica la fila en Sheets; vuelve a intentarlo para comprobar el duplicado.
+5. Envía una confirmación con captcha desde Pages y verifica la fila en Sheets; vuelve a enviarla con los mismos datos para comprobar que se crea una segunda fila.
 
 Para verificar localmente el build con la ruta del repositorio:
 

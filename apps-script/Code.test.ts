@@ -33,7 +33,6 @@ const base = {
 }
 function harness(
   options: {
-    contacts?: string[][]
     captcha?: boolean
     host?: string
     lock?: boolean
@@ -46,12 +45,9 @@ function harness(
   const release = vi.fn()
   const flush = vi.fn()
   const sheet = {
-    getLastRow: () => (options.contacts?.length || 0) + 1,
-    getRange: vi.fn((row: number, col: number) => ({
-      getValues: () =>
-        row === 1
-          ? [options.wrongHeaders ? ['wrong'] : api.HEADERS]
-          : options.contacts || [],
+    getLastRow: () => 1,
+    getRange: vi.fn((_row: number, col: number) => ({
+      getValues: () => [options.wrongHeaders ? ['wrong'] : api.HEADERS],
       setNumberFormat: vi.fn(),
       setFontWeight: vi.fn(),
       setValues: (rows: unknown[][]) => {
@@ -244,13 +240,12 @@ describe('Apps Script validation and persistence', () => {
       expect(h.written).toHaveLength(0)
     },
   )
-  it('checks duplicates using normalized email AND phone inside lock', () => {
-    const h = harness({ contacts: [[' JUAN@EXAMPLE.COM ', '9 1234 5678']] })
-    expect(h.post(base)).toContain('DUPLICATE_RSVP')
-    expect(h.written).toHaveLength(0)
-    expect(h.release).toHaveBeenCalledOnce()
-    const different = harness({ contacts: [['juan@example.com', '998765432']] })
-    expect(different.post(base)).toContain('RSVP_CREATED')
+  it('allows repeated submissions with the same email and phone', () => {
+    const h = harness()
+    expect(h.post(base)).toContain('RSVP_CREATED')
+    expect(h.post(base)).toContain('RSVP_CREATED')
+    expect(h.written).toHaveLength(2)
+    expect(h.release).toHaveBeenCalledTimes(2)
   })
   it('rejects after deadline before external services', () => {
     vi.setSystemTime(new Date('2026-12-10T00:00:00-03:00'))

@@ -169,17 +169,6 @@ function save_(data, properties) {
     if (closed_()) fail_('DEADLINE_CLOSED');
     var sheet = sheet_(properties);
     var lastRow = sheet.getLastRow();
-    if (lastRow > 1) {
-      var contacts = sheet.getRange(2, 9, lastRow - 1, 2).getValues();
-      var duplicate = contacts.some(function (row) {
-        return (
-          String(row[0]).replace(/^'/, '').trim().toLowerCase() ===
-            data.email &&
-          normalizePhone_(row[1]) === normalizePhone_(data.phone)
-        );
-      });
-      if (duplicate) fail_('DUPLICATE_RSVP');
-    }
     // A request queued before midnight must not write after the deadline.
     if (closed_()) fail_('DEADLINE_CLOSED');
     var row = [
@@ -278,7 +267,6 @@ function doPost(e) {
       'INVALID_INVITE',
       'VALIDATION_ERROR',
       'CAPTCHA_FAILED',
-      'DUPLICATE_RSVP',
       'DEADLINE_CLOSED',
     ];
     code =

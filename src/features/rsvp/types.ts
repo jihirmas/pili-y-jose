@@ -5,7 +5,6 @@ export const responseCodes = [
   'INVALID_INVITE',
   'VALIDATION_ERROR',
   'CAPTCHA_FAILED',
-  'DUPLICATE_RSVP',
   'DEADLINE_CLOSED',
   'SERVER_ERROR',
 ] as const

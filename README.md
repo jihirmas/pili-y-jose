@@ -65,11 +65,11 @@ El formulario cierra a las **00:00 del 10 de diciembre de 2026 en Santiago**. Go
 2. Completa [GitHub Pages](docs/GITHUB_PAGES_DEPLOY.md). Activa Pages y completa las variables en GitHub.
 3. Revisa [contenido pendiente](docs/CONTENT_TODO.md) y [enlaces de invitación](docs/INVITATION_LINKS.md).
 4. Ejecuta `npm run check:deploy`, tests, lint y build con las variables finales.
-5. Comprueba en incógnito desde el dominio final: captcha, ACK, fila guardada, duplicado y las cuatro variantes.
+5. Comprueba en incógnito desde el dominio final: captcha, ACK, fila guardada, reenvío y las cuatro variantes.
 
 ## Decisiones de integración
 
-El envío usa un formulario HTML POST a un iframe oculto. Solo un ACK con origen Google permitido, fuente perteneciente al iframe de ese intento, nonce activo y código coherente puede producir éxito. `iframe.onload` no confirma nada. A los 15 segundos sin ACK aparece un error y se conservan los datos. Si Google alcanzó a guardar antes del timeout, reintentar devuelve duplicado; el sitio no inventa una confirmación ni modifica filas.
+El envío usa un formulario HTML POST a un iframe oculto. Solo un ACK con origen Google permitido, fuente perteneciente al iframe de ese intento, nonce activo y código coherente puede producir éxito. `iframe.onload` no confirma nada. A los 15 segundos sin ACK aparece un error y se conservan los datos. Cada envío válido crea una fila nueva; si Google alcanzó a guardar antes del timeout, un reintento puede crear una fila adicional.
 
 HtmlService crea un iframe anidado: el servidor usa `window.top.postMessage` con el origen exacto configurado y el receptor comprueba la pertenencia del emisor al iframe esperado, incluido su sandbox. Es la adaptación necesaria al [sandbox documentado de Google](https://developers.google.com/apps-script/guides/html/restrictions). No se acepta cualquier mensaje de Google ni se usa `no-cors`.
 

@@ -745,6 +745,20 @@ nav a:hover {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.submit-button .submit-spinner {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: submit-spin 0.75s linear infinite;
+}
+@keyframes submit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .text-button {
   padding: 10px 0;
   min-height: 44px;

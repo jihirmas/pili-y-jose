@@ -78,9 +78,9 @@ El código se entrega probado localmente con Google simulado. La prueba real req
 2. Completa todos los campos y el captcha. En pareja, prueba primero «No» y luego una confirmación distinta con «Sí».
 3. Pulsa **Confirmar asistencia** una vez. Solo aparece el boarding pass tras recibir `RSVP_CREATED`.
 4. Verifica en Sheets que se creó exactamente una fila y revisa tipo, scope, booleanos, pasajeros y alimentación.
-5. Intenta confirmar nuevamente con el mismo email y teléfono, cambiando espacios, mayúsculas y formato chileno del teléfono. Debe mostrar duplicado sin crear una segunda fila.
+5. Confirma nuevamente con el mismo email y teléfono. Debe aceptar el envío y crear una segunda fila.
 6. Prueba los cuatro tipos. En party no deben aparecer iglesia, ceremonia, cóctel ni restricciones alimentarias.
-7. Corta la conexión al enviar: debe mostrar error sin borrar datos ni mostrar éxito. Si la fila alcanzó a guardarse, un reintento dará duplicado; revisa la hoja manualmente.
+7. Corta la conexión al enviar: debe mostrar error sin borrar datos ni mostrar éxito. Si la fila alcanzó a guardarse, un reintento puede crear otra fila; revisa la hoja manualmente.
 8. Borra manualmente solo las filas que tú identifiques como pruebas antes de distribuir el sitio.
 
 Para probar localmente con Google real, usa un proyecto/hoja y claves de prueba separados. Autoriza `localhost` en reCAPTCHA, usa `PARENT_ORIGIN=http://localhost:5173` y abre ese mismo origen. Si el servidor solo escucha `127.0.0.1`, ejecuta `npm run dev -- --host localhost`. No cambies el origen de producción para una prueba local. Los previews no autorizan envíos; usa un token configurado.
@@ -93,4 +93,4 @@ Si hay timeout, revisar `/exec`, acceso anónimo, versión implementada, bloqueo
 
 El cierre real es `2026-12-10T00:00:00-03:00`, incluyendo todo el 9 de diciembre. Se comprueba antes de reCAPTCHA y nuevamente dentro del lock antes de escribir. Para probar un cierre alternativo, usa un proyecto de prueba; restaura siempre la fecha definitiva. Nunca uses el reloj del navegador como autoridad.
 
-El lock protege deduplicación y escritura de este proyecto de Apps Script. No publiques dos proyectos distintos escribiendo simultáneamente en la misma hoja: sus locks no se comparten. No cambies encabezados ni insertes columnas entre las 16 existentes.
+El lock protege la escritura de este proyecto de Apps Script. No publiques dos proyectos distintos escribiendo simultáneamente en la misma hoja: sus locks no se comparten. No cambies encabezados ni insertes columnas entre las 16 existentes.

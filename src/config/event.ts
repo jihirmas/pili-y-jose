@@ -250,8 +250,6 @@ export const copy = {
       VALIDATION_ERROR: 'Revisa los datos ingresados e inténtalo nuevamente.',
       CAPTCHA_FAILED:
         'No pudimos validar la verificación de seguridad. Inténtalo nuevamente.',
-      DUPLICATE_RSVP:
-        'Ya encontramos una confirmación realizada con estos datos. Si necesitas hacer algún cambio, contáctanos directamente.',
       DEADLINE_CLOSED: 'El período de confirmación online ha finalizado.',
       SERVER_ERROR:
         'No pudimos guardar tu confirmación en este momento. Por favor inténtalo nuevamente.',
